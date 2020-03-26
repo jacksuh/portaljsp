@@ -29,7 +29,7 @@
 						<td>ID:</td>
 						<td><input type="text" readonly="readonly" id="id" name="id" value="${user.id}" class="field-long" /></td>
 						<td>CEP:</td>
-						<td><input type="text" id="cep" name="cep" value="" onblur="consultarCep()" value="${user.cep}" /></td>
+						<td><input type="text" id="cep" name="cep" value="" onblur="consultarCep()" value="${user.cep}" placeholder="Digite o CEP Valido" /></td>
 					</tr>
 					<tr>
 						<td>Login:</td>
@@ -45,13 +45,13 @@
 					</tr>
 					<tr>
 						<td>Nome:</td>
-						<td><input type="text" id="nome" name="nome" value="${user.nome}" /></td>
+						<td><input type="text" id="nome" name="nome" value="${user.nome}" placeholder="Digite o nome completo"/></td>
 						<td>Cidade:</td>
-						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}" /></td>
+						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}"/></td>
 					</tr>
 					<tr>
 						<td>Telefone:</td>
-						<td><input type="text" id="telefone" name="telefone" value="${user.telefone}" /></td>
+						<td><input type="text" id="telefone" name="telefone" value="${user.telefone}" placeholder="Digite o Telefone" /></td>
 						<td>Estado:</td>
 						<td><input type="text" id="estado" name="estado" value="${user.estado}" /></td>
 					</tr>
