@@ -21,7 +21,7 @@
 		<h1>Cadastro de Usuário</h1>
 		<h3 style="color:orange">${msg}</h3>
 	</center>
-	<form action="salvarUsuario" method="post" id="formUser" onsubmit="return validarCampos()? true : false;">
+	<form action="salvarUsuario" method="post" id="formUser" onsubmit="return validarCampos()? true : false;" enctype="multpart/form-data">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -59,6 +59,15 @@
 						<td>IBGE:</td>
 						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" /></td>
 					</tr>
+					
+					<tr>
+						<td>
+						Foto:
+						</td>
+						<td><input type="file" name="foto" value="Foto"></td>
+					</tr>
+					
+					
 					<tr>
 						<td></td>
 						<td><input type="submit" value="Salvar" />  <input type="submit" value="Cancelar" onclick="document.getElementById('formUser').action = 'salvarUsuario?acao=reset'" /></td>

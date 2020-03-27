@@ -1,7 +1,6 @@
 package servlet;
 
-import java.io.IOException;
-
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +12,7 @@ import beans.BeanCursoJsp;
 import dao.DaoUsuario;
 
 @WebServlet("/salvarUsuario")
+@MultipartConfig
 public class Usuario extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -96,7 +96,27 @@ public class Usuario extends HttpServlet {
 				usuario.setCidade(cidade);
 				usuario.setEstado(estado);
 				usuario.setIbge(ibge);
+				
+				
 					try {
+						
+					/*Inicio file de imagem e pdf upload*/
+						
+						if(ServletFileUpload.isMultipartContent(request)){
+						
+						Part imagemFoto = request.getPart("foto");
+						
+						String fotobase64 = new Base64().
+								encodeBase64String(converteStremParabyte(imagemFoto.getInputStream()));
+						
+						usuario.setFotoBase64(fotoBase64)
+						usuario.setContentType(imagemFoto.getContentType());
+						
+						}
+						
+						
+						/*FIM file de imagem e pdf upload*/
+						
 						String msg = null;
 						boolean podeInserir = true;
 						
@@ -142,5 +162,18 @@ public class Usuario extends HttpServlet {
 						e.printStackTrace();
 					}
 			}
+	}
+
+	/* CONVERTE A ENTRA DE FLUXO DE IMAGEM PARA BYTE[]*/
+	private byte[] converteStremParabyte(InputStream imagem) throws Exception {
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int reads = imagem.read();
+		while (read != -1 ){
+			baos.write(reads);
+			reads = imagem.read();
+		}
+		
+		return baos.toByteArray();
 	}
 }
