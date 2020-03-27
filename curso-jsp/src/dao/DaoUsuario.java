@@ -6,16 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import beans.BeanCursoJsp;
 import connection.SingleConnection;
 
-/*
- * Classe DaoUsuario
- * Classe Que Provê os Métodos e Validações Para Manipular Dados, e Acesso e Manipulação do BD
- */
 public class DaoUsuario {
-
-	private Connection connection;
+private Connection connection;
 	
 	/*
 	 * Construtor DaoUsuario()
