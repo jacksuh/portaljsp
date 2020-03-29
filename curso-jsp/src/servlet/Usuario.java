@@ -56,6 +56,7 @@ public class Usuario extends HttpServlet {
 					view.forward(request, response);
 				} else if(acao.equalsIgnoreCase("editar")) {
 					BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
+					
 					RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 					request.setAttribute("user", beanCursoJsp);
 					view.forward(request, response);
@@ -64,33 +65,31 @@ public class Usuario extends HttpServlet {
 					RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 					request.setAttribute("usuarios", daoUsuario.listar());
 					view.forward(request, response);
-				} else if (acao.equalsIgnoreCase("download")){
+				} else if(acao.equalsIgnoreCase("download")){
 					BeanCursoJsp usuario = daoUsuario.consultar(user);
-					if (usuario != null){
-						response.setHeader("Content-Disposition", "attachment;filename=arquivo."
-					   + usuario.getContentType().split("\\/")[1]);
+					if(usuario != null){
+						response.setHeader("Content-Disposition", "attachment;arquivo." +
+					usuario.getContentType().split("\\/")[1]);
 						
-						/*Converte a base64 da imagem do banco para byte[]*/
-						byte[] imageFotoBytes = new Base64().decodeBase64(usuario.getFotoBase64());
+						byte[] imageFotoBytes = new base64().decodeBase649(usuario.getFotoBase64());
 						
-						/*Coloca os bytes em um objeto de entrada para processar*/
-						InputStream is = new ByteArrayInputStream(imageFotoBytes);
+						InputStream id = new ByteArrayInputStream(imageFotoBytes);
 						
-						/*inicio da resposta para o navegador*/
-						int read= 0;
-						byte[] bytes = new byte[1024];
-						OutputStream os = response.getOutputStream();
+						int read = 0;
+						byte[] bytes = 	new byte[1024];
+						outputStream os = response.getOutputStream();
 						
-						
-						while ((read = is.read(bytes)) != -1) {
+						while ((read = is.read(bytes)) != -1){
 							os.write(bytes, 0, read);
 						}
 						
 						os.flush();
 						os.close();
 						
+						}
+					
 					}
-				}
+					
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
