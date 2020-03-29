@@ -2,7 +2,7 @@
     <wb-module deploy-name="curso-jsp">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="java-output-path" value="/curso-jsp/build/classes"/>
         <property name="context-root" value="curso-jsp"/>
+        <property name="java-output-path" value="/curso-jsp/build/classes"/>
     </wb-module>
 </project-modules>

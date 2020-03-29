@@ -6,12 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import beans.BeanCursoJsp;
 import connection.SingleConnection;
 
+/*
+ * Classe DaoUsuario
+ * Classe Que Provê os Métodos e Validações Para Manipular Dados, e Acesso e Manipulação do BD
+ */
 public class DaoUsuario {
-private Connection connection;
+
+	private Connection connection;
 	
 	/*
 	 * Construtor DaoUsuario()
@@ -76,6 +80,8 @@ private Connection connection;
 				beanCursoJsp.setCidade(resultSet.getString("cidade"));
 				beanCursoJsp.setEstado(resultSet.getString("estado"));
 				beanCursoJsp.setIbge(resultSet.getString("ibge"));
+				beanCursoJsp.setContentType(resultSet.getString("contenttype"));
+				beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
 				listar.add(beanCursoJsp);
 			}
 			return listar;
@@ -126,9 +132,11 @@ private Connection connection;
 				beanCursoJsp.setCidade(resultSet.getString("cidade"));
 				beanCursoJsp.setEstado(resultSet.getString("estado"));
 				beanCursoJsp.setIbge(resultSet.getString("ibge"));
+				beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
+				beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 				return beanCursoJsp;
 			}
-		return null;
+		return null; /*fotobase64, contenttype*/
 	}
 	
 	/*

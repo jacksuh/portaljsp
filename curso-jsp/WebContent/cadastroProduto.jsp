@@ -28,18 +28,18 @@
 					<tr>
 						<td>Nome:</td>
 						<td><input type="text" id="nome" name="nome"
-							value="${produto.nome}" placeholder="Digite o nome do produto"></td>
+							value="${produto.nome}"></td>
 					</tr>
 
 					<tr>
 						<td>Quantidade:</td>
 						<td><input type="text" id="quantidade" name="quantidade"
-							value="${produto.quantidade}" placeholder="Digite a Quantidade"></td>
+							value="${produto.quantidade}"></td>
 					</tr>
 					<tr>
 						<td>Valor R$:</td>
 						<td><input type="text" id="valor" name="valor"
-							value="${produto.valor}" placeholder="Digite o Valor"></td>
+							value="${produto.valor}"></td>
 					<tr>
 						<td></td>
 						<td><input type="submit" value="Salvar"> <input type="submit"  value="Cancelar" onclick="document.getElementById('formProduto').action = 'salvarProduto?acao=reset'"></td>

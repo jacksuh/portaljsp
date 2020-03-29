@@ -3,10 +3,14 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import connection.SingleConnection;
 
+/*
+ * Classe DaoLogin
+ * Responsável Pela Autenticação do Usuário
+ */
 public class DaoLogin {
+
 	/*
 	 * Objeto connection da Classe SingleConnection
 	 * Como Atributo de Classe

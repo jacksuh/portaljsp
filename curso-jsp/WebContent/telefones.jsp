@@ -75,8 +75,8 @@
 			} else if(document.getElementById("tipo").value == '') {
 				alert("Informe o Tipo!");
 			}
-			
 			return true;
+		}
 	</script>
 </body>
 </html>

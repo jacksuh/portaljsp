@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import org.apache.catalina.util.RequestUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -25,7 +24,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import beans.BeanCursoJsp;
 import dao.DaoUsuario;
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 @WebServlet("/salvarUsuario")
 @MultipartConfig
@@ -204,16 +202,17 @@ public class Usuario extends HttpServlet {
 	}
 	
 	/*Converte a entrada de fluxo de dados da imagem para byte[]*/
-	private byte [] converteStremParabyte(InputStream imagem) throws IOException{
+	private byte[] converteStremParabyte(InputStream imagem) throws Exception{
 		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int reads = imagem.read();
-		while (reads != -1){
-			baos.write(reads);
-			reads = imagem.read();
-		}
-		
-		return baos.toByteArray();
+	 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	 int reads = imagem.read();
+	 while (reads != -1){
+		 baos.write(reads);
+		 reads = imagem.read();
+	 }
+	 
+	 return baos.toByteArray();
+	
 	}
 
 }

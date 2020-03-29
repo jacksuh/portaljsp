@@ -15,7 +15,7 @@ import dao.DaoTelefone;
 import dao.DaoUsuario;
 
 @WebServlet("/salvarTelefones")
-public class ServletsTelefone  extends HttpServlet {
+public class ServletsTelefone extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private DaoUsuario daoUsuario = new DaoUsuario();
@@ -45,8 +45,6 @@ public class ServletsTelefone  extends HttpServlet {
 				} else if(acao.equalsIgnoreCase("deleteFone")) {
 					String foneId = request.getParameter("foneId");
 					daoTelefone.delete(foneId);
-					
-					BeanCursoJsp beanCursoJsp = (BeanCursoJsp) request.getSession().getAttribute("userEscolhido");
 					
 					RequestDispatcher view = request.getRequestDispatcher("/telefones.jsp");
 					request.setAttribute("telefone", daoTelefone.listar(Long.parseLong(foneId)));

@@ -12,7 +12,7 @@
 	<!-- Link de Acesso Para Painel de Controle de Usuários -->
 	<jsp:setProperty property="*" name="calcula"/>
 	<h1>Acesso Liberado ao Sistema!</h1>
-	<a href="salvarUsuario?acao=listartodos"><img src="resources/img/usuario.png" /></a>
+	<a href="salvarUsuario?acao=listartodos"><img src="resources/img/login.png" width="250px" height="120px" /></a>
 	<a href="salvarProduto?acao=listartodos"><img src="resources/img/produto.png" /></a>
 </body>
 </html>

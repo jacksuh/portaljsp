@@ -4,13 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-	
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link rel="stylesheet" href="resources/css/cadastro.css" />
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
-            
 		<title>Cadastro de Usuário</title>
 	</head>
 <body>
@@ -21,15 +19,16 @@
 		<h1>Cadastro de Usuário</h1>
 		<h3 style="color:orange">${msg}</h3>
 	</center>
-	<form action="salvarUsuario" method="post" id="formUser" onsubmit="return validarCampos()? true : false;" enctype="multpart/form-data">
+	<form action="salvarUsuario" method="post" id="formUser" 
+	   onsubmit="return validarCampos()? true : false;" enctype="multipart/form-data" >
 		<ul class="form-style-1">
 			<li>
 				<table>
 					<tr>
 						<td>ID:</td>
-						<td><input type="text" readonly="readonly" id="id" name="id" value="${user.id}" class="field-long" /></td>
+						<td><input type="text" readonly="readonly" id="id" name="id" value="${user.id}" /></td>
 						<td>CEP:</td>
-						<td><input type="text" id="cep" name="cep" value="" onblur="consultarCep()" value="${user.cep}" placeholder="Digite o CEP Valido" /></td>
+						<td><input type="text" id="cep" name="cep" value="" onblur="consultarCep()" value="${user.cep}" /></td>
 					</tr>
 					<tr>
 						<td>Login:</td>
@@ -45,13 +44,13 @@
 					</tr>
 					<tr>
 						<td>Nome:</td>
-						<td><input type="text" id="nome" name="nome" value="${user.nome}" placeholder="Digite o nome completo"/></td>
+						<td><input type="text" id="nome" name="nome" value="${user.nome}" placeholder ="Informe o nome"/></td>
 						<td>Cidade:</td>
-						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}"/></td>
+						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}" /></td>
 					</tr>
 					<tr>
 						<td>Telefone:</td>
-						<td><input type="text" id="telefone" name="telefone" value="${user.telefone}" placeholder="Digite o Telefone" /></td>
+						<td><input type="text" id="telefone" name="telefone" value="${user.telefone}" /></td>
 						<td>Estado:</td>
 						<td><input type="text" id="estado" name="estado" value="${user.estado}" /></td>
 					</tr>
@@ -59,19 +58,19 @@
 						<td>IBGE:</td>
 						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" /></td>
 					</tr>
-					
+
 					<tr>
 						<td>
-						Foto:
+						   Foto:	
 						</td>
-						<td><input type="file" name="foto" value="Foto"></td>
+						<td><input type="file" name="foto" value="Foto" > </td>
 					</tr>
-					
 					
 					<tr>
 						<td></td>
 						<td><input type="submit" value="Salvar" />  <input type="submit" value="Cancelar" onclick="document.getElementById('formUser').action = 'salvarUsuario?acao=reset'" /></td>
 					</tr>
+					
 				</table>
 			</li>
 		</ul>
@@ -81,29 +80,17 @@
 			<caption>Usuários Cadastrados</caption>
 			<tr>
 				<th>Id</th>
-				<th>Login</th>
+				<th>Foto</th>
 				<th>Nome</th>
-				<th>Telefone</th>
-				<th>Rua</th>
-				<th>Bairro</th>
-				<th>Cidade</th>
-				<th>Estado</th>
-				<th>IBGE</th>
 				<th>Delete</th>
 				<th>Update</th>
-				<th>Telefones</th>
+				<th>Telefone</th>
 			</tr>
 			<c:forEach items="${usuarios}" var="user">
 				<tr>
 					<td><c:out value="${user.id}" /></td>
-					<td><c:out value="${user.login}" /></td>
+					<td><a href="salvarUsuario?acao=download&user=${user.id}"><img src='<c:out value="${user.tempFotoUser}"/>' alt="Imagem User" title="Imagem User" width="32px" height="32px" /> </a></td>
 					<td><c:out value="${user.nome}" /></td>
-					<td><c:out value="${user.telefone}" /></td>
-					<td><c:out value="${user.rua}" /></td>
-					<td><c:out value="${user.bairro}" /></td>
-					<td><c:out value="${user.cidade}" /></td>
-					<td><c:out value="${user.estado}" /></td>
-					<td><c:out value="${user.ibge}" /></td>
 					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img src="resources/img/icon.png" alt="Excluir" title="Excluir" width="32px" height="32px" /></a></td>
 					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img src="resources/img/editar.png" alt="Editar" title="Editar" width="32px" height="32px" /></a></td>
 					<td><a href="salvarTelefones?acao=addFone&user=${user.id}"><img src="resources/img/telefone.png" alt="Telefones" title="Telefones" width="32px" height="32px" /></a></td>
