@@ -161,6 +161,9 @@ public class Usuario extends HttpServlet {
 						usuario.setFotoBase64(fotoBase64);
 						usuario.setContentType(imagemFoto.getContentType());
 						
+					}else{
+						usuario.setFotoBase64(request.getParameter("fotoTemp"));
+						usuario.setContentType(request.getParameter("contetTypeTemp"));
 					}
 					
 						Part curriculoPdf = request.getPart("curriculo");
@@ -171,6 +174,9 @@ public class Usuario extends HttpServlet {
 							usuario.setCurriculoBase64(curriculoBase64);
 							usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
 							
+						}else{
+							usuario.setFotoBase64(request.getParameter("fotoTempPDF"));
+							usuario.setContentType(request.getParameter("contetTypeTempPDF"));
 						}
 					
 					/*FIM File upload de imagems e pdf*/

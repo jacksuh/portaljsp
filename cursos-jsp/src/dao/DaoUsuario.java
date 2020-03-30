@@ -179,7 +179,10 @@ private Connection connection;
 	 */
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "UPDATE usuario SET login = ?, senha = ?, nome = ?, telefone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, ibge = ? WHERE id = "+ usuario.getId();
+			String sql = "UPDATE usuario SET login = ?, senha = ?, nome = ?, telefone = ?, "
+					+ "cep = ?, rua = ?, bairro = ?, cidade = ?, "
+					+ "estado = ?, ibge = ?, fotobase64 =?, contenttype=?, contenttypecurriculo=?"
+					+ ",curriculobase64=? WHERE id = "+ usuario.getId();
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, usuario.getLogin());
 			preparedStatement.setString(2, usuario.getSenha());
@@ -191,6 +194,10 @@ private Connection connection;
 			preparedStatement.setString(8, usuario.getCidade());
 			preparedStatement.setString(9, usuario.getEstado());
 			preparedStatement.setString(10, usuario.getIbge());
+			preparedStatement.setString(11, usuario.getFotoBase64());
+			preparedStatement.setString(12, usuario.getContentType());
+			preparedStatement.setString(14, usuario.getContentTypeCurriculo());
+			preparedStatement.setString(13, usuario.getCurriculoBase64());
 			preparedStatement.executeUpdate();
 			connection.commit();
 		} catch(Exception e) {
