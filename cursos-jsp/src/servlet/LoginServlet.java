@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.media.sound.RealTimeSequencerProvider;
+
 import beans.BeanCursoJsp;
 import dao.DaoLogin;
 
@@ -34,6 +36,9 @@ public class LoginServlet extends HttpServlet{
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 		
+			
+			if(login != null && !login.isEmpty() && senha != null && !senha.isEmpty()){
+			
 				if(daoLogin.validarLogin(login, senha)) {
 					RequestDispatcher dispatcher = request.getRequestDispatcher("acessoliberado.jsp");
 					dispatcher.forward(request, response);
@@ -41,7 +46,12 @@ public class LoginServlet extends HttpServlet{
 					RequestDispatcher dispatcher = request.getRequestDispatcher("acessonegado.jsp");
 					dispatcher.forward(request, response);
 				}
-		} catch(Exception e) {
+		}else{
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+			dispatcher.forward(request, response);
+		}
+			
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadastro de Produto</title>
 <link rel="stylesheet" href="resources/css/cadastro.css">
+ <script src="resources/javascript/jquery.min.js" type="text/javascript"></script>
+ <script src="resources/javascript/jquery.maskMoney.js" type="text/javascript"></script>
 </head>
 <body>
 	<a href="acessoliberado.jsp">Início</a>
@@ -22,27 +26,27 @@
 				<table>
 					<tr>
 						<td>Código:</td>
-						<td><input type="text" readonly="readonly" id="id" name="id"
+						<td><input type="text" readonly="readonly" id="id" name="id" 
 							value="${produto.id}" class="field-long"></td>
 					</tr>
 					<tr>
 						<td>Nome:</td>
-						<td><input type="text" id="nome" name="nome"
+						<td><input type="text" id="nome" name="nome" maxlength="100" style="width: 400px"
 							value="${produto.nome}"></td>
 					</tr>
 
 					<tr>
-						<td>Quantidade:</td>
-						<td><input type="text" id="quantidade" name="quantidade"
+						<td>Quantidade Un:</td>
+						<td><input type="number" id="quantidade" name="quantidade" maxlength="10"
 							value="${produto.quantidade}"></td>
 					</tr>
 					<tr>
 						<td>Valor R$:</td>
-						<td><input type="text" id="valor" name="valor"
-							value="${produto.valor}"></td>
+						<td><input type="text" id="valor" name="valor" maxlength="12" data-thousands="." data-decimal="," data-precision="1"
+							value="${produto.valorEmTexto}"></td>
 					<tr>
 						<td></td>
-						<td><input type="submit" value="Salvar"> <input type="submit"  value="Cancelar" onclick="document.getElementById('formProduto').action = 'salvarProduto?acao=reset'"></td>
+						<td><input type="submit" value="Salvar" style="width: 84px"> <input style="width: 84px" type="submit"  value="Cancelar" onclick="document.getElementById('formProduto').action = 'salvarProduto?acao=reset'"></td>
 					</tr>
 				</table>
 
@@ -68,7 +72,8 @@
 					<td style="width: 150px"><c:out value="${produto.nome}">
 						</c:out></td>
 					<td><c:out value="${produto.quantidade}"></c:out></td>
-					<td><c:out value="${produto.valor}"></c:out></td>
+					
+					<td><fmt:formatNumber type="number" maxFractionDigits="2" value="${produto.valor}"/></td>
 
 					<td><a href="salvarProduto?acao=delete&produto=${produto.id}"><img
 							src="resources/img/icon.png" alt="excluir" title="Excluir"
@@ -96,4 +101,11 @@
 		}
 	</script>
 </body>
+
+<script type="text/javascript">
+$(function() {
+    $('#valor').maskMoney();
+  })
+
+</script>
 </html>

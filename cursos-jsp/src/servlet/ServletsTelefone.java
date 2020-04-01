@@ -31,10 +31,10 @@ public class ServletsTelefone extends HttpServlet{
 		
 		try {
 			String acao = request.getParameter("acao");
+			String user = request.getParameter("user");
+			BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
 			
 				if(acao.equalsIgnoreCase("addFone")) {
-					String user = request.getParameter("user");
-					BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
 			
 					request.getSession().setAttribute("userEscolhido", beanCursoJsp);
 					request.setAttribute("userEscolhido", beanCursoJsp);
@@ -47,7 +47,8 @@ public class ServletsTelefone extends HttpServlet{
 					daoTelefone.delete(foneId);
 					
 					RequestDispatcher view = request.getRequestDispatcher("/telefones.jsp");
-					request.setAttribute("telefone", daoTelefone.listar(Long.parseLong(foneId)));
+					request.setAttribute("userEscolhido", beanCursoJsp);
+					request.setAttribute("telefone", daoTelefone.listar(Long.parseLong(user)));
 					request.setAttribute("msg", "Excluído Com Sucesso!");
 					view.forward(request, response);
 				}
@@ -60,9 +61,23 @@ public class ServletsTelefone extends HttpServlet{
 			throws ServletException, IOException {
 		
 		try {
+			
+			
+			
 			BeanCursoJsp beanCursoJsp = (BeanCursoJsp) request.getSession().getAttribute("userEscolhido");
 			String numero = request.getParameter("numero");
 			String tipo = request.getParameter("tipo");
+			String acao = request.getParameter("acao");
+			
+			if(acao == null || (acao != null && !acao.equalsIgnoreCase("voltar"))){
+			
+			if(numero == null || (numero) != null && numero.isEmpty()){
+				
+				RequestDispatcher view = request.getRequestDispatcher("/telefones.jsp");
+				request.setAttribute("telefone", daoTelefone.listar(beanCursoJsp.getId()));
+				request.setAttribute("msg", "Informe o numero!");
+				view.forward(request, response);
+			}else{
 			
 			BeanTelefone beanTelefone = new BeanTelefone();
 			beanTelefone.setNumero(numero);
@@ -76,6 +91,14 @@ public class ServletsTelefone extends HttpServlet{
 			request.setAttribute("telefone", daoTelefone.listar(beanCursoJsp.getId()));
 			request.setAttribute("msg", "Salvo Com Sucesso!");
 			view.forward(request, response);
+			
+			}
+			
+			}else {
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
+				request.setAttribute("usuarios", daoUsuario.listar());
+				view.forward(request, response);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

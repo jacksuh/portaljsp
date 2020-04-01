@@ -28,35 +28,33 @@
 						<td>ID:</td>
 						<td><input type="text" readonly="readonly" id="id" name="id" value="${user.id}" /></td>
 						<td>CEP:</td>
-						<td><input type="text" id="cep" name="cep" value="" onblur="consultarCep()" value="${user.cep}" /></td>
+						<td><input type="text" id="cep" name="cep" value="" onblur="consultarCep()" value="${user.cep}" maxlength="10" /></td>
 					</tr>
 					<tr>
 						<td>Login:</td>
-						<td><input type="text" id="login" name="login" value="${user.login}" /></td>
+						<td><input type="text" id="login" name="login" value="${user.login}" maxlength="10"/></td>
 						<td>Rua:</td>
-						<td><input type="text" id="rua" name="rua" value="${user.rua}" /></td>
+						<td><input type="text" id="rua" name="rua" value="${user.rua}" maxlength="50" /></td>
 					</tr>
 					<tr>
 						<td>Senha:</td>
-						<td><input type="password" id="senha" name="senha" value="${user.senha}" /></td>
+						<td><input type="password" id="senha" name="senha" value="${user.senha}" maxlength="10" /></td>
 						<td>Bairro:</td>
-						<td><input type="text" id="bairro" name="bairro" value="${user.bairro}" /></td>
+						<td><input type="text" id="bairro" name="bairro" value="${user.bairro}" maxlength="50" /></td>
 					</tr>
 					<tr>
 						<td>Nome:</td>
-						<td><input type="text" id="nome" name="nome" value="${user.nome}" placeholder ="Informe o nome"/></td>
+						<td><input type="text" id="nome" name="nome" value="${user.nome}" maxlength="50" placeholder ="Informe o nome"/></td>
 						<td>Cidade:</td>
-						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}" /></td>
+						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}" maxlength="50" /></td>
 					</tr>
 					<tr>
-						<td>Telefone:</td>
-						<td><input type="text" id="telefone" name="telefone" value="${user.telefone}" /></td>
 						<td>Estado:</td>
 						<td><input type="text" id="estado" name="estado" value="${user.estado}" /></td>
 					</tr>
 					<tr>
 						<td>IBGE:</td>
-						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" /></td>
+						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" maxlength="20"/></td>
 					</tr>
 
 					<tr>
@@ -79,7 +77,11 @@
 					
 					<tr>
 						<td></td>
-						<td><input type="submit" value="Salvar" />  <input type="submit" value="Cancelar" onclick="document.getElementById('formUser').action = 'salvarUsuario?acao=reset'" /></td>
+						<td><input type="submit" value="Salvar" style="width: 173px"/></td>  
+						<td></td>
+						<td>
+						<input type="submit" value="Cancelar" onclick="document.getElementById('formUser').action = 'salvarUsuario?acao=reset'" style="width: 173px" />
+						</td>
 					</tr>
 					
 				</table>
@@ -92,20 +94,35 @@
 			<tr>
 				<th>Id</th>
 				<th>Foto</th>
+				<th>Curriculo</th>
 				<th>Nome</th>
-				<th>Delete</th>
-				<th>Update</th>
 				<th>Telefone</th>
+				<th>Delete</th>
+				<th>Editar</th>
+
 			</tr>
 			<c:forEach items="${usuarios}" var="user">
 				<tr>
 					<td><c:out value="${user.id}" /></td>
+					
+					<c:if test="${user.fotoBase64.isEmpty() == false }">
 					<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${user.id}"><img src='<c:out value="${user.tempFotoUser}"/>' alt="Imagem User" title="Imagem User" width="32px" height="32px" /> </a></td>
-					<td><a href="salvarUsuario?acao=download&tipo=curriculo&user=${user.id}">Curriculo</a></td>
+					</c:if>
+					<c:if test="${user.fotoBase64.isEmpty() == true }">
+						<td><img alt="Imagem user" src="resources/img/userpadrao.png" width="32px" height="32px" onclick="alert('Não possui imagem')" ></td>
+					</c:if>
+					
+					<c:if test="${user.curriculoBase64.isEmpty() == false }">
+					<td><a href="salvarUsuario?acao=download&tipo=curriculo&user=${user.id}"><img alt="Curriculo" src="resources/img/pdf.png" width="32px" height="32px"></a></td>
+					</c:if>
+					<c:if test="${user.curriculoBase64.isEmpty() == true }">
+					<td><img alt="Curriculo" src="resources/img/pdf.png" width="32px" height="32px" onclick="alert('Não possui o PDF')"></td>
+					</c:if>
+					
 					<td><c:out value="${user.nome}" /></td>
+					<td><a href="salvarTelefones?acao=addFone&user=${user.id}"><img src="resources/img/telefone.png" alt="Telefones" title="Telefones" width="32px" height="32px" /></a></td>
 					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img src="resources/img/icon.png" alt="Excluir" title="Excluir" width="32px" height="32px" /></a></td>
 					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img src="resources/img/editar.png" alt="Editar" title="Editar" /></a></td>
-					<td><a href="salvarTelefones?acao=addFone&user=${user.id}"><img src="resources/img/telefone.png" alt="Telefones" title="Telefones" width="32px" height="32px" /></a></td>
 				</tr>
 			</c:forEach>
 		</table>

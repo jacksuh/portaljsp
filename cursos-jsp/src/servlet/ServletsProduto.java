@@ -37,6 +37,7 @@ public class ServletsProduto extends HttpServlet {
 				view.forward(request, response);
 			} else if (acao.equalsIgnoreCase("editar")) {
 
+				
 				BeanProduto beanCursoJsp = daoProduto.consultar(produto);
 
 				RequestDispatcher view = request
@@ -113,9 +114,14 @@ public class ServletsProduto extends HttpServlet {
 					produto.setQuantidade(Double.parseDouble(quantidade));
 				}
 
-				if (valor != null && !valor.isEmpty())
-					produto.setValor(Double.parseDouble(valor));
-
+				if (valor != null && !valor.isEmpty()){
+					//validação de virgula e ponto no valor replace("\\,", "")
+					String valorParse = valor.replaceAll("\\.", ""); //10500,20
+					
+					valorParse = valorParse.replaceAll("\\,", ".");//10500.20
+			
+					produto.setValor(Double.parseDouble(valorParse));
+				}
 				if (msg != null) {
 					request.setAttribute("msg", msg);
 				} else if (id == null || id.isEmpty()

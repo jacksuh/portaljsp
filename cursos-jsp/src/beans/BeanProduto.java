@@ -31,5 +31,9 @@ public class BeanProduto {
 		this.valor = valor;
 	}
 	
+	//tira o valor com ponto e coloca virgula
+	public String getValorEmTexto(){
+		return Double.toString(valor).replace('.', ',');
+	}
 	
 }
