@@ -11,6 +11,9 @@
 <body>
 	<!-- Tela de Login de Acesso Para o Sistema -->
 	<div class="login-page">
+	
+		<center><h3>Projeto Didatico</h3></center><br/>
+		<center><h1>JSP + Servlet + JDBC</h1></center>
   		<div class="form">
 			<form action="LoginServlet" class="login-form">
 				Login:

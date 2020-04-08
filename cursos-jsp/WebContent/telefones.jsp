@@ -10,8 +10,8 @@
 	</head>
 <body>
 	<!-- Tela de Manipulação de Telefones do Usuário -->
-	<a href="acessoliberado.jsp">Início</a>
-	<a href="index.jsp">Sair</a>
+	<a href="acessoliberado.jsp"><img alt="Home" title="Home" src="resources/img/home.png" width="50px"></a>
+	<a href="index.jsp"><img alt="Sair" title="Sair"  src="resources/img/exit.png" width="50px"></a>
 	<center>
 		<h1>Cadastro de Telefones</h1>
 		<h3 style="color:orange"></h3>

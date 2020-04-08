@@ -10,9 +10,22 @@
 <body>
 	<!-- Tela de Boas Vindas ao Sistema -->
 	<!-- Link de Acesso Para Painel de Controle de Usuários -->
+	
+	<center style="padding-top: 10%;">
 	<jsp:setProperty property="*" name="calcula"/>
-	<h1>Acesso Liberado ao Sistema!</h1>
-	<a href="salvarUsuario?acao=listartodos"><img src="resources/img/login.png" width="250px" height="120px" /></a>
-	<a href="salvarProduto?acao=listartodos"><img src="resources/img/produto.png" /></a>
+	<h1>Bem vindo ao Sistema!</h1>
+	
+	<table>
+		<tr>
+		<td><a href="salvarUsuario?acao=listartodos"><img src="resources/img/user.png" width="150px" height="120px" /></a></td>
+		<td><a href="salvarProduto?acao=listartodos"><img src="resources/img/produto.png" /></a></td>
+		</tr>
+		<tr>
+		<td>Ca. Usuario</td>
+		<td>Ca. Produto</td>
+		</tr>
+	</table>
+
+	</center>
 </body>
 </html>

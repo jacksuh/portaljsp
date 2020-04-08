@@ -13,8 +13,8 @@
  <script src="resources/javascript/jquery.maskMoney.js" type="text/javascript"></script>
 </head>
 <body>
-	<a href="acessoliberado.jsp">Início</a>
-	<a href="index.jsp">Sair</a>
+	<a href="acessoliberado.jsp"><img alt="Home" title="Home" src="resources/img/home.png" width="50px"></a>
+	<a href="index.jsp"><img alt="Sair" title="Sair"  src="resources/img/exit.png" width="50px"></a>
 	<center>
 		<h1>Cadastro de Produto</h1>
 	<h3 style="color: orange;">${msg}</h3>
@@ -37,7 +37,7 @@
 
 					<tr>
 						<td>Quantidade Un:</td>
-						<td><input type="number" id="quantidade" name="quantidade" maxlength="10"
+						<td><input type="text" id="quantidade" name="quantidade" maxlength="6"
 							value="${produto.quantidade}"></td>
 					</tr>
 					<tr>

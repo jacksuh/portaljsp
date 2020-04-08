@@ -32,6 +32,8 @@ public class ServletsTelefone extends HttpServlet{
 		try {
 			String acao = request.getParameter("acao");
 			String user = request.getParameter("user");
+			
+			if(user != null){
 			BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
 			
 				if(acao.equalsIgnoreCase("addFone")) {
@@ -52,6 +54,12 @@ public class ServletsTelefone extends HttpServlet{
 					request.setAttribute("msg", "Excluído Com Sucesso!");
 					view.forward(request, response);
 				}
+				
+			}else{
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
+				request.setAttribute("usuarios", daoUsuario.listar());
+				view.forward(request, response);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

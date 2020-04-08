@@ -14,10 +14,45 @@ public class BeanCursoJsp {
 	private String estado;
 	private String ibge;
 	private String fotoBase64;
+	private String fotoBase64Miniatura;
 	private String curriculoBase64;
 	private String contentTypeCurriculo;
 	private String contentType;
 	private String tempFotoUser;
+	
+	private boolean atualizarImage = true;
+	private boolean atualizarPdf = true;
+	
+	
+	
+	public boolean isAtualizarImage() {
+		return atualizarImage;
+	}
+
+	public void setAtualizarImage(boolean atualizarImage) {
+		this.atualizarImage = atualizarImage;
+	}
+
+	public boolean isAtualizarPdf() {
+		return atualizarPdf;
+	}
+
+	public void setAtualizarPdf(boolean atualizarPdf) {
+		this.atualizarPdf = atualizarPdf;
+	}
+
+	public void setTempFotoUser(String tempFotoUser) {
+		this.tempFotoUser = tempFotoUser;
+	}
+
+	public void setFotoBase64Miniatura(String fotoBase64Miniatura) {
+		this.fotoBase64Miniatura = fotoBase64Miniatura;
+	}
+	
+	public String getFotoBase64Miniatura() {
+		return fotoBase64Miniatura;
+	}
+	
 	
 	public String getTempFotoUser() {
 		

@@ -1,11 +1,14 @@
 package servlet;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -14,14 +17,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
+import com.oracle.jrockit.jfr.DataType;
 import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 import beans.BeanCursoJsp;
 import dao.DaoUsuario;
+import sun.java2d.pipe.DrawImage;
 import sun.nio.cs.ext.ISCII91;
 
 @WebServlet("/salvarUsuario")
@@ -155,19 +161,45 @@ public class Usuario extends HttpServlet {
 
 						Part imagemFoto = request.getPart("foto");
 						
-						String fotoBase64 = new Base64()
-						.encodeBase64String(converteStremParabyte(imagemFoto.getInputStream()));
+					if(imagemFoto != null && imagemFoto.getInputStream().available() > 0){	
+						
+						
+						String fotoBase64 = new Base64().encodeBase64String(converteStremParabyte(imagemFoto.getInputStream()));
 						
 						usuario.setFotoBase64(fotoBase64);
 						usuario.setContentType(imagemFoto.getContentType());
 						
+						//inicio foto miniatura
+						byte[] imageByteDecode = new Base64().decodeBase64(fotoBase64);
+						
+						BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
+						
+						int type = bufferedImage.getType() == 0 ? bufferedImage.TYPE_INT_ARGB: bufferedImage.getType();
+						
+						//cria a imagem em miniatura
+						BufferedImage resizeImage = new BufferedImage(100, 100, type);
+						Graphics2D g = resizeImage.createGraphics();
+						g.drawImage(bufferedImage, 0, 0, 100, 100, null);
+						g.dispose();
+						
+						
+						//escrever imagem novamente
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						ImageIO.write(resizeImage, "png", baos);
+				
+						
+						String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+						
+						
+						usuario.setFotoBase64Miniatura(miniaturaBase64);
+						
 					}else{
-						usuario.setFotoBase64(request.getParameter("fotoTemp"));
-						usuario.setContentType(request.getParameter("contetTypeTemp"));
+						usuario.setAtualizarImage(false);;
+						
 					}
 					
 						Part curriculoPdf = request.getPart("curriculo");
-						if(curriculoPdf != null){
+						if(curriculoPdf != null && curriculoPdf.getInputStream().available() > 0){
 							String curriculoBase64 = new Base64().
 									encodeBase64String(converteStremParabyte(curriculoPdf.getInputStream()));
 							
@@ -175,8 +207,8 @@ public class Usuario extends HttpServlet {
 							usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
 							
 						}else{
-							usuario.setFotoBase64(request.getParameter("fotoTempPDF"));
-							usuario.setContentType(request.getParameter("contetTypeTempPDF"));
+							usuario.setAtualizarPdf(false);;
+					
 						}
 					
 					/*FIM File upload de imagems e pdf*/
@@ -216,12 +248,13 @@ public class Usuario extends HttpServlet {
 						
 						if(!podeInserir) {
 							request.setAttribute("user", usuario);
-						}
 						
+						}
 						RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 						request.setAttribute("usuarios", daoUsuario.listar());
 						request.setAttribute("msg", "Salvo Com Sucesso!");
 						view.forward(request, response);
+					}
 					} catch(Exception e) {
 						e.printStackTrace();
 					}

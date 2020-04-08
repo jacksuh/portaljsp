@@ -28,7 +28,7 @@ private Connection connection;
 	 */
 	public void salvar(BeanCursoJsp usuario) {
 		try {
-			String sql = "INSERT INTO usuario(login, senha, nome, telefone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculobase64, contenttypecurriculo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+			String sql = "INSERT INTO usuario(login, senha, nome, telefone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculobase64, contenttypecurriculo, fotobase64miniatura) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)";
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
 			insert.setString(2, usuario.getSenha());
@@ -44,6 +44,7 @@ private Connection connection;
 			insert.setString(12, usuario.getContentType());
 			insert.setString(13,usuario.getCurriculoBase64());
 			insert.setString(14, usuario.getContentTypeCurriculo());
+			insert.setString(15, usuario.getFotoBase64Miniatura());
 			insert.execute();
 			connection.commit();
 		} catch(Exception e) {
@@ -62,7 +63,7 @@ private Connection connection;
 	 */
 	public List<BeanCursoJsp> listar() throws Exception {
 		List<BeanCursoJsp> listar = new ArrayList<BeanCursoJsp>();
-		String sql = "SELECT * FROM usuario";
+		String sql = "SELECT * FROM usuario where login <> 'admin'";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next()) {
@@ -78,7 +79,8 @@ private Connection connection;
 				beanCursoJsp.setCidade(resultSet.getString("cidade"));
 				beanCursoJsp.setEstado(resultSet.getString("estado"));
 				beanCursoJsp.setIbge(resultSet.getString("ibge"));
-				beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
+				beanCursoJsp.setFotoBase64Miniatura(resultSet.getString("fotobase64miniatura"));
+				//beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
 				beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 				beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculobase64"));
 				beanCursoJsp.setContentTypeCurriculo(resultSet.getString("contenttypecurriculo"));
@@ -95,7 +97,7 @@ private Connection connection;
 	public void delete(String id) {
 		if (id != null && !id.isEmpty()) {
 			try {
-				String sql = "DELETE FROM usuario WHERE id = '"+ id +"'";
+				String sql = "DELETE FROM usuario WHERE id = '"+ id +"' and login <> 'admin'";
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.execute();
 				connection.commit();
@@ -116,7 +118,7 @@ private Connection connection;
 	 * @param String id = Atributo ID do Usuário
 	 */
 	public BeanCursoJsp consultar(String id) throws Exception {
-		String sql = "SELECT * FROM usuario WHERE id = '"+ id +"'";
+		String sql = "SELECT * FROM usuario WHERE id = '"+ id +"' and login <> 'admin'";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		ResultSet resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
@@ -135,6 +137,7 @@ private Connection connection;
 				beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
 				beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 				beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculobase64"));
+				beanCursoJsp.setFotoBase64Miniatura(resultSet.getString("fotobase64miniatura"));
 				beanCursoJsp.setContentTypeCurriculo(resultSet.getString("contenttypecurriculo"));
 				
 				return beanCursoJsp;
@@ -179,11 +182,27 @@ private Connection connection;
 	 */
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "UPDATE usuario SET login = ?, senha = ?, nome = ?, telefone = ?, "
-					+ "cep = ?, rua = ?, bairro = ?, cidade = ?, "
-					+ "estado = ?, ibge = ?, fotobase64 =?, contenttype=?, contenttypecurriculo=?"
-					+ ",curriculobase64=? WHERE id = "+ usuario.getId();
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append(" UPDATE usuario SET login = ?, senha = ?, nome = ?, telefone = ?, ");
+			sql.append(" cep = ?, rua = ?, bairro = ?, cidade = ?, ");
+			sql.append(" estado = ?, ibge = ?, "); 
+			
+			if(usuario.isAtualizarImage()){
+			sql.append(" fotobase64 =?, contenttype=?, ");
+			}
+			
+			if(usuario.isAtualizarPdf()){
+			sql.append(" curriculobase64=?, contenttypecurriculo=?");
+			}
+			
+			if(usuario.isAtualizarImage()){
+				sql.append(" fotobase64miniatura=? ");
+			}
+			
+			sql.append(" WHERE id = "+ usuario.getId());
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
 			preparedStatement.setString(1, usuario.getLogin());
 			preparedStatement.setString(2, usuario.getSenha());
 			preparedStatement.setString(3, usuario.getNome());
@@ -194,10 +213,32 @@ private Connection connection;
 			preparedStatement.setString(8, usuario.getCidade());
 			preparedStatement.setString(9, usuario.getEstado());
 			preparedStatement.setString(10, usuario.getIbge());
-			preparedStatement.setString(11, usuario.getFotoBase64());
-			preparedStatement.setString(12, usuario.getContentType());
-			preparedStatement.setString(14, usuario.getContentTypeCurriculo());
-			preparedStatement.setString(13, usuario.getCurriculoBase64());
+			
+			if(usuario.isAtualizarImage()){
+				preparedStatement.setString(11, usuario.getFotoBase64());
+				preparedStatement.setString(12, usuario.getContentType());
+			}
+			
+			if(usuario.isAtualizarPdf()){
+				
+				if(usuario.isAtualizarPdf() && !usuario.isAtualizarImage()){
+			preparedStatement.setString(12, usuario.getContentTypeCurriculo());
+			preparedStatement.setString(11, usuario.getCurriculoBase64());
+				
+				}else{
+					preparedStatement.setString(13, usuario.getContentTypeCurriculo());
+					preparedStatement.setString(14, usuario.getCurriculoBase64());
+				}
+			}else{
+				if(usuario.isAtualizarImage()){
+					preparedStatement.setString(13, usuario.getFotoBase64Miniatura());
+				}
+			}
+			
+			if(usuario.isAtualizarImage() && usuario.isAtualizarPdf()){
+				preparedStatement.setString(15, usuario.getFotoBase64Miniatura());
+			}
+			
 			preparedStatement.executeUpdate();
 			connection.commit();
 		} catch(Exception e) {
