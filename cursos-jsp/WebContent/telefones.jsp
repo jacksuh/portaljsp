@@ -67,7 +67,7 @@
 					<td><c:out value="${fone.id}" /></td>
 					<td><c:out value="${fone.numero}" /></td>
 					<td><c:out value="${fone.tipo}" /></td>
-					<td><a href="salvarTelefones?user=${fone.usuario}&acao=deleteFone&foneId=${fone.id}"><img src="resources/img/icon.png" alt="Excluir" title="Excluir" width="32px" height="32px" /></a></td>
+					<td><a href="salvarTelefones?user=${fone.usuario}&acao=deleteFone&foneId=${fone.id}" onclick="return confirm('Confirmar a exclusão?');  "><img src="resources/img/icon.png" alt="Excluir" title="Excluir" width="32px" height="32px" /></a></td>
 				</tr>
 			</c:forEach>
 		</table>

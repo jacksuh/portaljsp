@@ -28,7 +28,7 @@ private Connection connection;
 	 */
 	public void salvar(BeanCursoJsp usuario) {
 		try {
-			String sql = "INSERT INTO usuario(login, senha, nome, telefone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculobase64, contenttypecurriculo, fotobase64miniatura) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)";
+			String sql = "INSERT INTO usuario(login, senha, nome, telefone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculobase64, contenttypecurriculo, fotobase64miniatura, ativo, sexo, perfil) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?, ?, ?, ?)";
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
 			insert.setString(2, usuario.getSenha());
@@ -45,6 +45,9 @@ private Connection connection;
 			insert.setString(13,usuario.getCurriculoBase64());
 			insert.setString(14, usuario.getContentTypeCurriculo());
 			insert.setString(15, usuario.getFotoBase64Miniatura());
+			insert.setBoolean(16, usuario.isAtivo());
+			insert.setString(17, usuario.getSexo());
+			insert.setString(18, usuario.getPerfil());
 			insert.execute();
 			connection.commit();
 		} catch(Exception e) {
@@ -61,9 +64,19 @@ private Connection connection;
 	 * Método listar()
 	 * Responsável Por Listar Todos os Usuários do Sistema
 	 */
+	
+	public List<BeanCursoJsp> listar (String descricaoconsulta) throws SQLException{
+		String sql = "SELECT * FROM usuario where login <> 'admin' and nome like '%"+descricaoconsulta+"%'";
+		return consultarUsuarios(sql);
+	}
+	
 	public List<BeanCursoJsp> listar() throws Exception {
-		List<BeanCursoJsp> listar = new ArrayList<BeanCursoJsp>();
 		String sql = "SELECT * FROM usuario where login <> 'admin'";
+		return consultarUsuarios(sql);
+	}
+
+	private List<BeanCursoJsp> consultarUsuarios(String sql) throws SQLException {
+		List<BeanCursoJsp> listar = new ArrayList<BeanCursoJsp>();
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next()) {
@@ -84,8 +97,12 @@ private Connection connection;
 				beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 				beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculobase64"));
 				beanCursoJsp.setContentTypeCurriculo(resultSet.getString("contenttypecurriculo"));
+				beanCursoJsp.setAtivo(resultSet.getBoolean("ativo"));
+				beanCursoJsp.setSexo(resultSet.getString("sexo"));
+				beanCursoJsp.setPerfil(resultSet.getString("perfil"));
 				listar.add(beanCursoJsp);
 			}
+			
 			return listar;
 	}
 	
@@ -139,6 +156,9 @@ private Connection connection;
 				beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculobase64"));
 				beanCursoJsp.setFotoBase64Miniatura(resultSet.getString("fotobase64miniatura"));
 				beanCursoJsp.setContentTypeCurriculo(resultSet.getString("contenttypecurriculo"));
+				beanCursoJsp.setAtivo(resultSet.getBoolean("ativo"));
+				beanCursoJsp.setSexo(resultSet.getString("sexo"));
+				beanCursoJsp.setPerfil(resultSet.getString("perfil"));
 				
 				return beanCursoJsp;
 			}
@@ -186,7 +206,7 @@ private Connection connection;
 			
 			sql.append(" UPDATE usuario SET login = ?, senha = ?, nome = ?, telefone = ?, ");
 			sql.append(" cep = ?, rua = ?, bairro = ?, cidade = ?, ");
-			sql.append(" estado = ?, ibge = ?, "); 
+			sql.append(" estado = ?, ibge = ?, ativo =?, sexo =?, perfil=?, "); 
 			
 			if(usuario.isAtualizarImage()){
 			sql.append(" fotobase64 =?, contenttype=?, ");
@@ -213,30 +233,33 @@ private Connection connection;
 			preparedStatement.setString(8, usuario.getCidade());
 			preparedStatement.setString(9, usuario.getEstado());
 			preparedStatement.setString(10, usuario.getIbge());
+			preparedStatement.setBoolean(11, usuario.isAtivo());
+			preparedStatement.setString(12, usuario.getSexo());
+			preparedStatement.setString(13, usuario.getPerfil());
 			
 			if(usuario.isAtualizarImage()){
-				preparedStatement.setString(11, usuario.getFotoBase64());
-				preparedStatement.setString(12, usuario.getContentType());
+				preparedStatement.setString(14, usuario.getFotoBase64());
+				preparedStatement.setString(15, usuario.getContentType());
 			}
 			
 			if(usuario.isAtualizarPdf()){
 				
 				if(usuario.isAtualizarPdf() && !usuario.isAtualizarImage()){
-			preparedStatement.setString(12, usuario.getContentTypeCurriculo());
-			preparedStatement.setString(11, usuario.getCurriculoBase64());
+			preparedStatement.setString(15, usuario.getContentTypeCurriculo());
+			preparedStatement.setString(14, usuario.getCurriculoBase64());
 				
 				}else{
-					preparedStatement.setString(13, usuario.getContentTypeCurriculo());
-					preparedStatement.setString(14, usuario.getCurriculoBase64());
+					preparedStatement.setString(16, usuario.getContentTypeCurriculo());
+					preparedStatement.setString(17, usuario.getCurriculoBase64());
 				}
 			}else{
 				if(usuario.isAtualizarImage()){
-					preparedStatement.setString(13, usuario.getFotoBase64Miniatura());
+					preparedStatement.setString(16, usuario.getFotoBase64Miniatura());
 				}
 			}
 			
 			if(usuario.isAtualizarImage() && usuario.isAtualizarPdf()){
-				preparedStatement.setString(15, usuario.getFotoBase64Miniatura());
+				preparedStatement.setString(18, usuario.getFotoBase64Miniatura());
 			}
 			
 			preparedStatement.executeUpdate();

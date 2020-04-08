@@ -19,15 +19,47 @@ public class BeanCursoJsp {
 	private String contentTypeCurriculo;
 	private String contentType;
 	private String tempFotoUser;
+	private boolean ativo;
+	private String sexo;
+	private String perfil;
 	
 	private boolean atualizarImage = true;
 	private boolean atualizarPdf = true;
 	
 	
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+	
+	public String getPerfil() {
+		return perfil;
+	}
+	
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	
+	public String getSexo() {
+		return sexo;
+	}
 	
 	public boolean isAtualizarImage() {
 		return atualizarImage;
 	}
+	
+	
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+
 
 	public void setAtualizarImage(boolean atualizarImage) {
 		this.atualizarImage = atualizarImage;
